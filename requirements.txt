@@ -11,3 +11,5 @@ python-multipart
 pypdf
 langchain
 langchain-openai
+celery
+redis

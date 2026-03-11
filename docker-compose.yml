@@ -12,6 +12,24 @@ services:
     depends_on:
       - postgres
       - qdrant
+      - redis
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  celery_worker:
+    build: .
+    command: celery -A app.worker worker --loglevel=info
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - postgres
+      - qdrant
 
   postgres:
     image: postgres:15
