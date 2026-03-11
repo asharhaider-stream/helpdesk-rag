@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+asyncpg
+psycopg2-binary
+qdrant-client
+openai
+python-dotenv
+pydantic-settings
+python-multipart
+pypdf
+langchain
+langchain-openai
