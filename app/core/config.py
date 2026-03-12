@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     postgres_url: str
     qdrant_host: str
     qdrant_port: int
+    secret_key: str
 
     class Config:
         env_file = ".env"
