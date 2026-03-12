@@ -8,10 +8,12 @@ client = QdrantClient(
 )
 
 def create_collection(tenant_id: str):
-    client.recreate_collection(
-        collection_name=tenant_id,
-        vectors_config=VectorParams(
-            size=1536,
-            distance=Distance.COSINE
+    existing = [c.name for c in client.get_collections().collections]
+    if tenant_id not in existing:
+        client.create_collection(
+            collection_name=tenant_id,
+            vectors_config=VectorParams(
+                size=1536,
+                distance=Distance.COSINE
+            )
         )
-    )
