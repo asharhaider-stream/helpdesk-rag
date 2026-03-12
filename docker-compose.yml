@@ -9,6 +9,7 @@ services:
       - .env
     volumes:
       - .:/app
+      - uploads_data:/tmp/uploads
     depends_on:
       - postgres
       - qdrant
@@ -26,6 +27,7 @@ services:
       - .env
     volumes:
       - .:/app
+      - uploads_data:/tmp/uploads
     depends_on:
       - redis
       - postgres
@@ -52,3 +54,4 @@ services:
 volumes:
   postgres_data:
   qdrant_data:
+  uploads_data:
