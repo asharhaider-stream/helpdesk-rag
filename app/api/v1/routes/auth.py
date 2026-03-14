@@ -6,6 +6,7 @@ from app.db.postgres import AsyncSessionLocal
 from app.models.tenant import Tenant
 from app.core.security import hash_password, verify_password, create_jwt
 import uuid
+from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter()
 
@@ -39,12 +40,12 @@ async def register(request: RegisterRequest, db: AsyncSession = Depends(get_db))
     return {"message": "Registered successfully", "tenant_id": tenant.tenant_id}
 
 @router.post("/login")
-async def login(request: LoginRequest, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(Tenant).where(Tenant.email == request.email))
+async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Tenant).where(Tenant.email == form_data.username))
     tenant = result.scalar_one_or_none()
     
-    if not tenant or not verify_password(request.password, tenant.password):
+    if not tenant or not verify_password(form_data.password, tenant.password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     
     token = create_jwt({"tenant_id": tenant.tenant_id})
-    return {"access_token": token}
+    return {"access_token": token, "token_type": "bearer"}
