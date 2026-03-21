@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deskmate - Login</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .auth-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .auth-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f1faee;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #457b9d;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+
+        .auth-tab.active {
+            color: #1d3557;
+            border-bottom-color: #1d3557;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .auth-form h2 {
+            font-size: 24px;
+            color: #1d3557;
+            margin-bottom: 8px;
+        }
+
+        .auth-form p {
+            color: #457b9d;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .auth-form .btn-primary {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/" class="logo">Deskmate</a>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-card">
+
+            <div class="auth-tabs">
+                <div class="auth-tab active" onclick="switchTab('login')">Login</div>
+                <div class="auth-tab" onclick="switchTab('register')">Register</div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="auth-form active" id="login-form">
+                <h2>Welcome back</h2>
+                <p>Login to access your dashboard</p>
+                <div id="login-alert"></div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="login-email" placeholder="name@company.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="login-password" placeholder="........">
+                </div>
+                <button class="btn-primary" onclick="handleLogin()">Sign In</button>
+            </div>
+
+            <!-- Register Form -->
+            <div class="auth-form" id="register-form">
+                <h2>Create your account</h2>
+                <p>Start turning your documents into a support agent</p>
+                <div id="register-alert"></div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="register-email" placeholder="name@company.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="register-password" placeholder="........">
+                </div>
+                <button class="btn-primary" onclick="handleRegister()">Create Account</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/static/js/auth.js"></script>
+</body>
+</html>

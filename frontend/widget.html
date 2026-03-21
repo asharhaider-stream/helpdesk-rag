@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deskmate - Widget</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .page-header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1d3557;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1d3557;
+            margin-bottom: 12px;
+        }
+
+        .code-box {
+            background-color: #1d3557;
+            border-radius: 10px;
+            padding: 24px;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .code-box pre {
+            color: #a8dadc;
+            font-size: 13px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-break: break-all;
+            font-family: monospace;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+        }
+
+        .key-section {
+            margin-bottom: 30px;
+        }
+
+        .key-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .key-display {
+            background-color: white;
+            border: 1px solid #a8dadc;
+            border-radius: 6px;
+            padding: 10px 16px;
+            font-size: 13px;
+            color: #457b9d;
+            font-family: monospace;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .preview-section {
+            position: relative;
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            min-height: 300px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-bottom: 30px;
+        }
+
+        .preview-section p {
+            color: #457b9d;
+            font-size: 14px;
+        }
+
+        .chat-bubble-preview {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            width: 52px;
+            height: 52px;
+            background-color: #457b9d;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .chat-bubble-preview svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .no-key-notice {
+            background-color: #fde8e8;
+            border-radius: 8px;
+            padding: 16px 20px;
+            color: #e63946;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-layout">
+        <div class="sidebar">
+            <div class="logo">Deskmate</div>
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/documents.html">Documents</a>
+            <a href="/widget.html" class="active">Widget</a>
+            <div style="margin-top: auto; padding-top: 20px;">
+                <button class="btn-danger" style="width:100%" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="page-header">
+                <h1>Widget Setup</h1>
+            </div>
+
+            <div class="no-key-notice" id="no-key-notice">
+                You have not generated an API key yet. Generate one below to get your embed code.
+            </div>
+
+            <div class="card key-section">
+                <div class="section-title">Your API Key</div>
+                <div class="key-row">
+                    <div class="key-display" id="key-display">No key generated yet</div>
+                    <button class="btn-primary" onclick="generateKey()">Generate New Key</button>
+                </div>
+                <p style="font-size:12px; color:#e63946; margin-top:10px;">
+                    Your key is only shown once when generated. Store it safely.
+                </p>
+            </div>
+
+            <div class="card" style="margin-bottom:30px;">
+                <div class="section-title">Embed Code</div>
+                <p style="font-size:13px; color:#457b9d; margin-bottom:16px;">
+                    Paste this before the closing &lt;/body&gt; tag on your website.
+                </p>
+                <div class="code-box">
+                    <pre id="embed-code">Generate an API key to get your embed code.</pre>
+                    <button class="btn-primary copy-btn" onclick="copyEmbedCode()">Copy</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-title">Live Preview</div>
+                <div class="preview-section">
+                    <p>This is how the chat widget will appear on your website.</p>
+                    <div class="chat-bubble-preview">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/static/js/widget.js"></script>
+</body>
+</html>

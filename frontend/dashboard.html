@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deskmate - Dashboard</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1d3557;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-info span {
+            font-size: 14px;
+            color: #457b9d;
+        }
+
+        .tenant-id-box {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .tenant-id-box p {
+            font-size: 13px;
+            color: #457b9d;
+            margin-bottom: 4px;
+        }
+
+        .tenant-id-box code {
+            font-size: 14px;
+            color: #1d3557;
+            font-weight: 600;
+            background-color: #f1faee;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+
+        .recent-header {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1d3557;
+            margin-bottom: 16px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #457b9d;
+        }
+
+        .empty-state p {
+            margin-bottom: 16px;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-layout">
+        <div class="sidebar">
+            <div class="logo">Deskmate</div>
+            <a href="/dashboard.html" class="active">Dashboard</a>
+            <a href="/documents.html">Documents</a>
+            <a href="/widget.html">Widget</a>
+            <div style="margin-top: auto; padding-top: 20px;">
+                <button class="btn-danger" style="width:100%" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="page-header">
+                <h1>Dashboard</h1>
+                <div class="user-info">
+                    <span id="user-email">Loading...</span>
+                </div>
+            </div>
+
+            <div class="tenant-id-box">
+                <div>
+                    <p>Your Tenant ID</p>
+                    <code id="tenant-id">Loading...</code>
+                </div>
+                <button class="btn-primary" onclick="copyTenantId()">Copy</button>
+            </div>
+
+            <div class="stat-cards">
+                <div class="stat-card">
+                    <h3>Total Documents</h3>
+                    <p id="total-docs">-</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Queries Answered</h3>
+                    <p>Coming Soon</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="recent-header">Recent Documents</div>
+                <div id="recent-docs">
+                    <div class="empty-state">
+                        <p>No documents uploaded yet.</p>
+                        <a href="/documents.html" class="btn-primary" style="text-decoration:none">Upload your first document</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

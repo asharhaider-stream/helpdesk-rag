@@ -2,10 +2,30 @@ from app.worker import celery_app
 from pypdf import PdfReader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from openai import OpenAI
+from app.models.document import Document
+from app.db.postgres import AsyncSessionLocal
 from app.core.config import settings
 from app.db.qdrant import client as qdrant_client, create_collection
 from qdrant_client.models import PointStruct
 import uuid
+from sqlalchemy import update
+import asyncio
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+sync_engine = create_engine(
+    settings.postgres_url.replace("postgresql+asyncpg", "postgresql+psycopg2")
+)
+SyncSession = sessionmaker(bind=sync_engine)
+
+def mark_document_done(document_id: int):
+    with SyncSession() as db:
+        db.execute(
+            update(Document)
+            .where(Document.id == document_id)
+            .values(status="done")
+        )
+        db.commit()
 
 openai_client = OpenAI(api_key=settings.openai_api_key)
 
@@ -45,3 +65,14 @@ def process_document(file_path: str, tenant_id: str, document_id: int):
     )
 
     print(f"Stored {len(points)} vectors in Qdrant")
+    
+    async def mark_done(document_id: int):
+        async with AsyncSessionLocal() as db:
+            await db.execute(
+                update(Document)
+                .where(Document.id == document_id)
+                .values(status="done")
+            )
+            await db.commit()
+
+    mark_document_done(document_id)   

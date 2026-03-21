@@ -7,6 +7,7 @@ from app.models.tenant import Tenant
 from app.core.security import hash_password, verify_password, create_jwt
 import uuid
 from fastapi.security import OAuth2PasswordRequestForm
+from app.core.dependencies import get_current_tenant
 
 router = APIRouter()
 
@@ -49,3 +50,19 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSessi
     
     token = create_jwt({"tenant_id": tenant.tenant_id})
     return {"access_token": token, "token_type": "bearer"}
+
+@router.get("/me")
+async def get_me(
+    db: AsyncSession = Depends(get_db),
+    current_tenant: str = Depends(get_current_tenant)
+):
+    result = await db.execute(select(Tenant).where(Tenant.tenant_id == current_tenant))
+    tenant = result.scalar_one_or_none()
+    
+    if not tenant:
+        raise HTTPException(status_code=404, detail="Tenant not found")
+    
+    return {
+        "email": tenant.email,
+        "tenant_id": tenant.tenant_id
+    }

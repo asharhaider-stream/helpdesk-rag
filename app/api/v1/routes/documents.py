@@ -40,3 +40,14 @@ async def upload_document(
     process_document.delay(file_path, current_tenant, doc.id)
 
     return {"id": doc.id, "filename": doc.filename, "tenant_id": doc.tenant_id, "status": doc.status}
+
+@router.get("/")
+async def get_documents(
+    db: AsyncSession = Depends(get_db),
+    current_tenant: str = Depends(get_current_tenant)
+):
+    result = await db.execute(
+        select(Document).where(Document.tenant_id == current_tenant)
+    )
+    documents = result.scalars().all()
+    return documents
