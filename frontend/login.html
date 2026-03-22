@@ -3,132 +3,575 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deskmate - Login</title>
+    <title>Deskmate — Login</title>
     <link rel="stylesheet" href="/static/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            display: flex;
-            flex-direction: column;
             min-height: 100vh;
+            display: flex;
+            background-color: var(--bg);
         }
 
-        .auth-container {
+        .auth-left {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            max-width: 560px;
+        }
+
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 60px;
+            text-decoration: none;
+        }
+
+        .auth-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--blue);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
         }
 
-        .auth-card {
-            background-color: white;
-            border-radius: 12px;
-            padding: 40px;
-            width: 100%;
-            max-width: 440px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        .auth-logo-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+
+        .auth-logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+
+        .auth-form-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 400px;
         }
 
         .auth-tabs {
             display: flex;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #f1faee;
+            gap: 0;
+            margin-bottom: 28px;
+            border-bottom: 1px solid var(--border);
         }
 
         .auth-tab {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
+            padding: 10px 0;
+            margin-right: 24px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-muted);
             cursor: pointer;
-            font-weight: 600;
-            color: #457b9d;
-            border-bottom: 3px solid transparent;
-            margin-bottom: -2px;
-            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            transition: all var(--transition);
+            background: none;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            font-family: var(--font);
         }
 
         .auth-tab.active {
-            color: #1d3557;
-            border-bottom-color: #1d3557;
+            color: var(--text-primary);
+            border-bottom-color: var(--blue);
         }
 
-        .auth-form {
-            display: none;
-        }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
 
-        .auth-form.active {
-            display: block;
-        }
-
-        .auth-form h2 {
+        .auth-heading {
             font-size: 24px;
-            color: #1d3557;
-            margin-bottom: 8px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
         }
 
-        .auth-form p {
-            color: #457b9d;
+        .auth-subheading {
             font-size: 14px;
-            margin-bottom: 24px;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
         }
 
-        .auth-form .btn-primary {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
+        .auth-footer-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .auth-footer-text a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        /* Right panel */
+        .auth-right {
+            flex: 1;
+            background-color: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-right::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            pointer-events: none;
+        }
+
+        .auth-right-headline {
+            font-size: 36px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.8px;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .auth-right-sub {
+            font-size: 15px;
+            color: var(--sidebar-text);
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        /* Chat preview */
+        .chat-preview {
+            width: 320px;
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .chat-preview-header {
+            background-color: var(--sidebar-bg);
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .chat-preview-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chat-online-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--green);
+            border-radius: 50%;
+        }
+
+        .chat-preview-title span {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .chat-preview-title small {
+            font-size: 11px;
+            color: var(--green);
+        }
+
+        .chat-preview-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background-color: #F8FAFC;
+            min-height: 200px;
+        }
+
+        .chat-msg {
+            max-width: 85%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .chat-msg.bot {
+            background-color: white;
+            color: var(--text-primary);
+            align-self: flex-start;
+            box-shadow: var(--shadow-sm);
+            border-bottom-left-radius: 3px;
+        }
+
+        .chat-msg.user {
+            background-color: var(--blue);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 3px;
+        }
+
+        .chat-preview-input {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+            background-color: white;
+        }
+
+        .chat-preview-input input {
+            flex: 1;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 7px 12px;
+            font-size: 12px;
+            font-family: var(--font);
+            outline: none;
+            color: var(--text-secondary);
+        }
+
+        .chat-preview-send {
+            width: 30px;
+            height: 30px;
+            background-color: var(--blue);
+            border: none;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .chat-preview-send svg {
+            width: 14px;
+            height: 14px;
+            fill: white;
+        }
+
+        @media (max-width: 768px) {
+            .auth-right { display: none; }
+            .auth-left {
+                padding: 30px 24px;
+                max-width: 100%;
+            }
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="/" class="logo">Deskmate</a>
-    </nav>
+    <!-- Left: Form -->
+    <div class="auth-left">
+        <a href="/" class="auth-logo">
+            <div class="auth-logo-icon">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+            </div>
+            <span class="auth-logo-text">Deskmate</span>
+        </a>
 
-    <div class="auth-container">
-        <div class="auth-card">
-
+        <div class="auth-form-container">
             <div class="auth-tabs">
-                <div class="auth-tab active" onclick="switchTab('login')">Login</div>
-                <div class="auth-tab" onclick="switchTab('register')">Register</div>
+                <button class="auth-tab active" onclick="switchTab('login', this)">Login</button>
+                <button class="auth-tab" onclick="switchTab('register', this)">Register</button>
             </div>
 
             <!-- Login Form -->
             <div class="auth-form active" id="login-form">
-                <h2>Welcome back</h2>
-                <p>Login to access your dashboard</p>
-                <div id="login-alert"></div>
+                <h2 class="auth-heading">Welcome back</h2>
+                <p class="auth-subheading">Sign in to your Deskmate account</p>
+
+                <div class="alert alert-error" id="login-error"></div>
+
                 <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="login-email" placeholder="name@company.com">
+                    <label class="form-label">Email address</label>
+                    <input type="email" id="login-email" class="form-input" placeholder="name@company.com">
+                    <span class="form-error" id="login-email-error">Please enter a valid email address</span>
                 </div>
+
                 <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="login-password" placeholder="........">
+                    <label class="form-label">Password</label>
+                    <div class="form-input-wrapper">
+                        <input type="password" id="login-password" class="form-input" placeholder="Enter your password">
+                        <button class="input-toggle-btn" onclick="togglePassword('login-password', this)" type="button">
+                            <svg id="eye-login" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <span class="form-error" id="login-password-error">Password is required</span>
                 </div>
-                <button class="btn-primary" onclick="handleLogin()">Sign In</button>
+
+                <button class="btn btn-primary btn-full btn-lg" onclick="handleLogin(this)">
+                    Sign In
+                </button>
+
+                <p class="auth-footer-text">
+                    By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>
+                </p>
             </div>
 
             <!-- Register Form -->
             <div class="auth-form" id="register-form">
-                <h2>Create your account</h2>
-                <p>Start turning your documents into a support agent</p>
-                <div id="register-alert"></div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="register-email" placeholder="name@company.com">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="register-password" placeholder="........">
-                </div>
-                <button class="btn-primary" onclick="handleRegister()">Create Account</button>
-            </div>
+                <h2 class="auth-heading">Create an account</h2>
+                <p class="auth-subheading">Start turning your documents into a support agent</p>
 
+                <div class="alert alert-success" id="register-success"></div>
+                <div class="alert alert-error" id="register-error"></div>
+
+                <div class="form-group">
+                    <label class="form-label">Email address</label>
+                    <input type="email" id="register-email" class="form-input" placeholder="name@company.com">
+                    <span class="form-error" id="register-email-error">Please enter a valid email address</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="form-input-wrapper">
+                        <input type="password" id="register-password" class="form-input" placeholder="Minimum 8 characters">
+                        <button class="input-toggle-btn" onclick="togglePassword('register-password', this)" type="button">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <span class="form-error" id="register-password-error">Password must be at least 8 characters</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Confirm password</label>
+                    <div class="form-input-wrapper">
+                        <input type="password" id="register-confirm" class="form-input" placeholder="Repeat your password">
+                        <button class="input-toggle-btn" onclick="togglePassword('register-confirm', this)" type="button">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <span class="form-error" id="register-confirm-error">Passwords do not match</span>
+                </div>
+
+                <button class="btn btn-primary btn-full btn-lg" onclick="handleRegister(this)">
+                    Create Account
+                </button>
+            </div>
         </div>
     </div>
 
-    <script src="/static/js/auth.js"></script>
+    <!-- Right: Preview Panel -->
+    <div class="auth-right">
+        <h2 class="auth-right-headline">Turn your documents into a support agent.</h2>
+        <p class="auth-right-sub">Upload once. Answer forever.</p>
+
+        <div class="chat-preview">
+            <div class="chat-preview-header">
+                <div class="chat-preview-title">
+                    <div class="chat-online-dot"></div>
+                    <div>
+                        <span>Support Assistant</span><br>
+                        <small>Online and ready to help</small>
+                    </div>
+                </div>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </div>
+            <div class="chat-preview-body">
+                <div class="chat-msg bot">Hi! I have analyzed your documents. How can I help you today?</div>
+                <div class="chat-msg user">How do I reset my password?</div>
+                <div class="chat-msg bot">To reset your password, go to Settings and click "Change Password". You will receive a confirmation email within 2 minutes.</div>
+            </div>
+            <div class="chat-preview-input">
+                <input type="text" placeholder="Type a message..." disabled>
+                <button class="chat-preview-send">
+                    <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Redirect if already logged in
+        if (localStorage.getItem('token')) window.location.href = '/dashboard.html'
+
+        function switchTab(tab, btn) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'))
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'))
+            btn.classList.add('active')
+            document.getElementById(`${tab}-form`).classList.add('active')
+        }
+
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId)
+            const isText = input.type === 'text'
+            input.type = isText ? 'password' : 'text'
+            btn.innerHTML = isText
+                ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`
+                : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+        }
+
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+        }
+
+        function showError(id, show) {
+            const el = document.getElementById(id)
+            if (show) el.classList.add('visible')
+            else el.classList.remove('visible')
+        }
+
+        function showAlert(id, message) {
+            const el = document.getElementById(id)
+            el.textContent = message
+            el.classList.add('visible')
+        }
+
+        function hideAlert(id) {
+            document.getElementById(id).classList.remove('visible')
+        }
+
+        async function handleLogin(btn) {
+            const email = document.getElementById('login-email').value.trim()
+            const password = document.getElementById('login-password').value
+
+            let valid = true
+
+            if (!validateEmail(email)) {
+                showError('login-email-error', true)
+                document.getElementById('login-email').classList.add('error')
+                valid = false
+            } else {
+                showError('login-email-error', false)
+                document.getElementById('login-email').classList.remove('error')
+            }
+
+            if (!password) {
+                showError('login-password-error', true)
+                document.getElementById('login-password').classList.add('error')
+                valid = false
+            } else {
+                showError('login-password-error', false)
+                document.getElementById('login-password').classList.remove('error')
+            }
+
+            if (!valid) return
+
+            btn.classList.add('btn-loading')
+            hideAlert('login-error')
+
+            const formData = new FormData()
+            formData.append('username', email)
+            formData.append('password', password)
+
+            try {
+                const res = await fetch('/api/v1/auth/login', {
+                    method: 'POST',
+                    body: formData
+                })
+                const data = await res.json()
+
+                if (!res.ok) {
+                    showAlert('login-error', 'Incorrect email or password. Please try again.')
+                    return
+                }
+
+                localStorage.setItem('token', data.access_token)
+                window.location.href = '/dashboard.html'
+
+            } catch (err) {
+                showAlert('login-error', 'Something went wrong. Please try again.')
+            } finally {
+                btn.classList.remove('btn-loading')
+            }
+        }
+
+        async function handleRegister(btn) {
+            const email = document.getElementById('register-email').value.trim()
+            const password = document.getElementById('register-password').value
+            const confirm = document.getElementById('register-confirm').value
+
+            let valid = true
+
+            if (!validateEmail(email)) {
+                showError('register-email-error', true)
+                document.getElementById('register-email').classList.add('error')
+                valid = false
+            } else {
+                showError('register-email-error', false)
+                document.getElementById('register-email').classList.remove('error')
+            }
+
+            if (password.length < 8) {
+                showError('register-password-error', true)
+                document.getElementById('register-password').classList.add('error')
+                valid = false
+            } else {
+                showError('register-password-error', false)
+                document.getElementById('register-password').classList.remove('error')
+            }
+
+            if (confirm !== password) {
+                showError('register-confirm-error', true)
+                document.getElementById('register-confirm').classList.add('error')
+                valid = false
+            } else {
+                showError('register-confirm-error', false)
+                document.getElementById('register-confirm').classList.remove('error')
+            }
+
+            if (!valid) return
+
+            btn.classList.add('btn-loading')
+            hideAlert('register-error')
+            hideAlert('register-success')
+
+            try {
+                const res = await fetch('/api/v1/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                })
+                const data = await res.json()
+
+                if (!res.ok) {
+                    showAlert('register-error', data.detail || 'Registration failed. Try again.')
+                    return
+                }
+
+                showAlert('register-success', 'Account created successfully. Please login.')
+                document.getElementById('register-email').value = ''
+                document.getElementById('register-password').value = ''
+                document.getElementById('register-confirm').value = ''
+
+            } catch (err) {
+                showAlert('register-error', 'Something went wrong. Please try again.')
+            } finally {
+                btn.classList.remove('btn-loading')
+            }
+        }
+    </script>
 </body>
 </html>

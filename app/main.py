@@ -13,6 +13,7 @@ from fastapi.templating import Jinja2Templates
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
+from app.models.query_log import QueryLog
 
 # 1. Create app first
 app = FastAPI(title="Helpdesk RAG SaaS", version="1.0.0")
