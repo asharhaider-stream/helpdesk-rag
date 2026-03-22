@@ -3,176 +3,608 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deskmate - Widget</title>
+    <title>Deskmate — Widget</title>
     <link rel="stylesheet" href="/static/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        .page-header h1 {
-            font-size: 26px;
-            font-weight: 700;
-            color: #1d3557;
-            margin-bottom: 30px;
+        .widget-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 20px;
         }
 
-        .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #1d3557;
+        .step-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             margin-bottom: 12px;
         }
 
-        .code-box {
-            background-color: #1d3557;
-            border-radius: 10px;
-            padding: 24px;
-            position: relative;
-            margin-bottom: 30px;
-        }
-
-        .code-box pre {
-            color: #a8dadc;
+        .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: var(--blue);
+            color: white;
             font-size: 13px;
-            line-height: 1.8;
-            white-space: pre-wrap;
-            word-break: break-all;
-            font-family: monospace;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
 
-        .copy-btn {
-            position: absolute;
-            top: 16px;
-            right: 16px;
+        .step-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
         }
 
-        .key-section {
-            margin-bottom: 30px;
+        .step-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            line-height: 1.6;
         }
 
         .key-row {
             display: flex;
             align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .key-display {
-            background-color: white;
-            border: 1px solid #a8dadc;
-            border-radius: 6px;
-            padding: 10px 16px;
-            font-size: 13px;
-            color: #457b9d;
-            font-family: monospace;
             flex: 1;
-            min-width: 200px;
+            padding: 9px 14px;
+            background-color: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .preview-section {
-            position: relative;
+        .key-warning {
+            font-size: 12px;
+            color: var(--red);
+            margin-top: 8px;
+            display: none;
+        }
+
+        .key-warning.visible { display: block; }
+
+        /* Preview panel */
+        .preview-panel {
+            position: sticky;
+            top: 80px;
+        }
+
+        .browser-mockup {
+            background-color: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .browser-bar {
             background-color: white;
-            border-radius: 10px;
-            padding: 30px;
-            min-height: 300px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .preview-section p {
-            color: #457b9d;
-            font-size: 14px;
+        .browser-dots {
+            display: flex;
+            gap: 5px;
         }
 
-        .chat-bubble-preview {
+        .browser-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .browser-dot:nth-child(1) { background-color: #EF4444; }
+        .browser-dot:nth-child(2) { background-color: #F59E0B; }
+        .browser-dot:nth-child(3) { background-color: #22C55E; }
+
+        .browser-url {
+            flex: 1;
+            background-color: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 4px 10px;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        .browser-content {
+            padding: 24px;
+            min-height: 320px;
+            position: relative;
+            background-color: var(--bg);
+        }
+
+        .fake-page-line {
+            height: 10px;
+            background-color: var(--border);
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .fake-page-line.short { width: 60%; }
+        .fake-page-line.medium { width: 80%; }
+
+        .widget-bubble-preview {
             position: absolute;
-            bottom: 24px;
-            right: 24px;
-            width: 52px;
-            height: 52px;
-            background-color: #457b9d;
+            bottom: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            background-color: var(--blue);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 16px rgba(59,130,246,0.4);
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
         }
 
-        .chat-bubble-preview svg {
-            width: 24px;
-            height: 24px;
+        .widget-bubble-preview:hover { transform: scale(1.08); }
+
+        .widget-bubble-preview svg {
+            width: 22px;
+            height: 22px;
             fill: white;
         }
 
-        .no-key-notice {
-            background-color: #fde8e8;
-            border-radius: 8px;
-            padding: 16px 20px;
-            color: #e63946;
-            font-size: 14px;
-            margin-bottom: 20px;
+        /* Mini chat window in preview */
+        .mini-chat {
+            position: absolute;
+            bottom: 80px;
+            right: 20px;
+            width: 280px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
             display: none;
+        }
+
+        .mini-chat.open { display: block; }
+
+        .mini-chat-header {
+            background-color: var(--sidebar-bg);
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mini-chat-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mini-online-dot {
+            width: 7px;
+            height: 7px;
+            background-color: var(--green);
+            border-radius: 50%;
+        }
+
+        .mini-chat-body {
+            padding: 12px;
+            background-color: var(--bg);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 120px;
+        }
+
+        .mini-msg {
+            max-width: 85%;
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .mini-msg.bot {
+            background-color: white;
+            color: var(--text-primary);
+            align-self: flex-start;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .mini-msg.user {
+            background-color: var(--blue);
+            color: white;
+            align-self: flex-end;
+        }
+
+        .mini-chat-input {
+            padding: 10px 12px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 6px;
+            background-color: white;
+        }
+
+        .mini-chat-input input {
+            flex: 1;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 5px 8px;
+            font-size: 11px;
+            font-family: var(--font);
+            outline: none;
+        }
+
+        .mini-send-btn {
+            width: 26px;
+            height: 26px;
+            background-color: var(--blue);
+            border: none;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .mini-send-btn svg {
+            width: 12px;
+            height: 12px;
+            fill: white;
+        }
+
+        @media (max-width: 900px) {
+            .widget-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-panel { position: static; }
         }
     </style>
 </head>
 <body>
 
-    <div class="app-layout">
-        <div class="sidebar">
-            <div class="logo">Deskmate</div>
-            <a href="/dashboard.html">Dashboard</a>
-            <a href="/documents.html">Documents</a>
-            <a href="/widget.html" class="active">Widget</a>
-            <div style="margin-top: auto; padding-top: 20px;">
-                <button class="btn-danger" style="width:100%" onclick="handleLogout()">Logout</button>
+<div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-icon">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
             </div>
+            <span class="sidebar-logo-text">Deskmate</span>
         </div>
 
-        <div class="main-content">
-            <div class="page-header">
-                <h1>Widget Setup</h1>
-            </div>
+        <div class="sidebar-section-label">General</div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard.html" class="sidebar-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                    <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                Dashboard
+            </a>
+            <a href="/documents.html" class="sidebar-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14,2 14,8 20,8"/>
+                </svg>
+                Documents
+            </a>
+            <a href="/widget.html" class="sidebar-link active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                Widget
+            </a>
+        </nav>
 
-            <div class="no-key-notice" id="no-key-notice">
-                You have not generated an API key yet. Generate one below to get your embed code.
-            </div>
+        <div class="sidebar-section-label">Account</div>
+        <nav class="sidebar-nav">
+            <a href="/settings.html" class="sidebar-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                Settings
+            </a>
+        </nav>
 
-            <div class="card key-section">
-                <div class="section-title">Your API Key</div>
-                <div class="key-row">
-                    <div class="key-display" id="key-display">No key generated yet</div>
-                    <button class="btn-primary" onclick="generateKey()">Generate New Key</button>
-                </div>
-                <p style="font-size:12px; color:#e63946; margin-top:10px;">
-                    Your key is only shown once when generated. Store it safely.
-                </p>
-            </div>
+        <div class="sidebar-bottom">
+            <button class="sidebar-logout" onclick="handleLogout()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16,17 21,12 16,7"/>
+                    <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                Logout
+            </button>
+        </div>
+    </aside>
 
-            <div class="card" style="margin-bottom:30px;">
-                <div class="section-title">Embed Code</div>
-                <p style="font-size:13px; color:#457b9d; margin-bottom:16px;">
-                    Paste this before the closing &lt;/body&gt; tag on your website.
-                </p>
-                <div class="code-box">
-                    <pre id="embed-code">Generate an API key to get your embed code.</pre>
-                    <button class="btn-primary copy-btn" onclick="copyEmbedCode()">Copy</button>
-                </div>
-            </div>
+    <!-- Main -->
+    <div class="main-wrapper">
 
-            <div class="card">
-                <div class="section-title">Live Preview</div>
-                <div class="preview-section">
-                    <p>This is how the chat widget will appear on your website.</p>
-                    <div class="chat-bubble-preview">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+        <header class="topbar">
+            <span class="topbar-title">Widget Setup</span>
+            <div class="topbar-right" style="position:relative;">
+                <button class="avatar-btn" id="avatar-btn" onclick="toggleDropdown()">
+                    <span id="avatar-initials">?</span>
+                </button>
+                <div class="avatar-dropdown" id="avatar-dropdown">
+                    <div class="avatar-dropdown-header">
+                        <div class="avatar-dropdown-email" id="dropdown-email">Loading...</div>
+                    </div>
+                    <button class="avatar-dropdown-item danger" onclick="handleLogout()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16,17 21,12 16,7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
                         </svg>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="page-content">
+
+            <div class="page-header">
+                <h1>Embed your chat widget</h1>
+                <p>Complete these steps once. Your widget stays live forever.</p>
+            </div>
+
+            <div class="widget-layout">
+
+                <!-- Left: Steps -->
+                <div>
+
+                    <!-- Step 1 -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-num">1</div>
+                            <span class="step-title">Generate your API key</span>
+                        </div>
+                        <p class="step-desc">
+                            Create a unique key for your widget. This key identifies your account when customers ask questions. Generate it once and store it safely.
+                        </p>
+                        <div class="key-row">
+                            <div class="key-display" id="key-display">No key generated yet</div>
+                            <button class="btn btn-primary btn-sm" onclick="generateKey(this)">Generate Key</button>
+                            <button class="btn btn-secondary btn-sm" onclick="copyKey()" id="copy-key-btn" style="display:none">Copy</button>
+                        </div>
+                        <p class="key-warning" id="key-warning">
+                            This key is shown only once. Store it in a safe place before leaving this page.
+                        </p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-num">2</div>
+                            <span class="step-title">Copy your embed code</span>
+                        </div>
+                        <p class="step-desc">
+                            Copy this script tag. You will paste it into your website's HTML. This is the only code you need.
+                        </p>
+                        <div class="code-box">
+                            <pre id="embed-code"><span style="color:var(--text-muted)">Generate an API key first to see your embed code.</span></pre>
+                            <button class="btn btn-secondary btn-sm code-copy-btn" onclick="copyEmbedCode()">Copy</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-num">3</div>
+                            <span class="step-title">Paste before closing body tag</span>
+                        </div>
+                        <p class="step-desc">
+                            Open your website's HTML file and paste the script tag just before <code style="background:var(--bg); padding:2px 6px; border-radius:4px; font-family:var(--font-mono); font-size:12px;">&lt;/body&gt;</code>. Save and deploy. The chat bubble will appear automatically on your website.
+                        </p>
+                        <div style="background-color:var(--green-light); border:1px solid #BBF7D0; border-radius:var(--radius-sm); padding:12px 16px; font-size:13px; color:#15803D;">
+                            Your widget works on any website — HTML, WordPress, React, or any platform. No additional setup needed.
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right: Preview -->
+                <div class="preview-panel">
+                    <div class="card" style="margin-bottom:12px;">
+                        <div class="card-header">
+                            <span class="card-title">Live Preview</span>
+                            <span style="font-size:12px; color:var(--text-muted)">Click the bubble</span>
+                        </div>
+                    </div>
+                    <div class="browser-mockup">
+                        <div class="browser-bar">
+                            <div class="browser-dots">
+                                <div class="browser-dot"></div>
+                                <div class="browser-dot"></div>
+                                <div class="browser-dot"></div>
+                            </div>
+                            <div class="browser-url">https://your-website.com</div>
+                        </div>
+                        <div class="browser-content">
+                            <div class="fake-page-line"></div>
+                            <div class="fake-page-line short"></div>
+                            <div class="fake-page-line medium"></div>
+                            <div class="fake-page-line short"></div>
+                            <div class="fake-page-line"></div>
+                            <div class="fake-page-line medium"></div>
+
+                            <!-- Mini chat window -->
+                            <div class="mini-chat" id="mini-chat">
+                                <div class="mini-chat-header">
+                                    <div class="mini-chat-title">
+                                        <div class="mini-online-dot"></div>
+                                        Support Assistant
+                                    </div>
+                                    <svg onclick="togglePreviewChat()" style="cursor:pointer" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                                    </svg>
+                                </div>
+                                <div class="mini-chat-body">
+                                    <div class="mini-msg bot">Hi! Ask me anything about our products or services.</div>
+                                    <div class="mini-msg user">How do I get started?</div>
+                                    <div class="mini-msg bot">Getting started is easy! Upload your documents and I will learn everything about your business.</div>
+                                </div>
+                                <div class="mini-chat-input">
+                                    <input type="text" placeholder="Type a message..." disabled>
+                                    <button class="mini-send-btn">
+                                        <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Chat bubble -->
+                            <div class="widget-bubble-preview" onclick="togglePreviewChat()">
+                                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </div>
-
-        </div>
+        </main>
     </div>
+</div>
 
-    <script src="/static/js/widget.js"></script>
+<script>
+    const token = localStorage.getItem('token')
+    if (!token) window.location.href = '/login.html'
+
+    let currentApiKey = null
+
+    document.addEventListener('click', (e) => {
+        const dropdown = document.getElementById('avatar-dropdown')
+        const btn = document.getElementById('avatar-btn')
+        if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.remove('open')
+        }
+    })
+
+    function toggleDropdown() {
+        document.getElementById('avatar-dropdown').classList.toggle('open')
+    }
+
+    function togglePreviewChat() {
+        document.getElementById('mini-chat').classList.toggle('open')
+    }
+
+    function handleLogout() {
+        localStorage.removeItem('token')
+        window.location.href = '/login.html'
+    }
+
+    async function generateKey(btn) {
+        btn.classList.add('btn-loading')
+        btn.textContent = ''
+
+        try {
+            const res = await fetch('/api/v1/apikeys/generate', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            const data = await res.json()
+
+            if (!res.ok) {
+                alert('Failed to generate key. Try again.')
+                return
+            }
+
+            currentApiKey = data.api_key
+            document.getElementById('key-display').textContent = data.api_key
+            document.getElementById('key-warning').classList.add('visible')
+            document.getElementById('copy-key-btn').style.display = 'inline-flex'
+            updateEmbedCode(data.api_key)
+
+        } catch (err) {
+            alert('Something went wrong. Try again.')
+        } finally {
+            btn.classList.remove('btn-loading')
+            btn.textContent = 'Generate Key'
+        }
+    }
+
+    function copyKey() {
+        if (currentApiKey) {
+            navigator.clipboard.writeText(currentApiKey)
+            alert('API key copied!')
+        }
+    }
+
+    function updateEmbedCode(apiKey) {
+        document.getElementById('embed-code').innerHTML =
+            `<span class="code-tag">&lt;script</span> <span class="code-attr">src</span>=<span class="code-val">"https://yourdomain.com/static/js/chat-widget.js"</span>\n  <span class="code-attr">data-api-key</span>=<span class="code-val">"${apiKey}"</span><span class="code-tag">&gt;&lt;/script&gt;</span>`
+    }
+
+    function copyEmbedCode() {
+        const code = document.getElementById('embed-code').textContent
+        navigator.clipboard.writeText(code)
+        alert('Embed code copied!')
+    }
+
+    async function loadKeyInfo() {
+        try {
+            const res = await fetch('/api/v1/apikeys/my-key', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            const data = await res.json()
+
+            if (data.total_keys > 0) {
+                document.getElementById('key-display').textContent =
+                    `Key generated on ${new Date(data.keys[0].created_at).toLocaleDateString()}`
+                updateEmbedCode('your-stored-api-key')
+            }
+
+        } catch (err) {
+            console.error('Failed to load key info', err)
+        }
+    }
+
+    async function loadUser() {
+        try {
+            const res = await fetch('/api/v1/auth/me', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            const user = await res.json()
+            document.getElementById('avatar-initials').textContent = user.email.substring(0, 2).toUpperCase()
+            document.getElementById('dropdown-email').textContent = user.email
+        } catch (err) {
+            console.error('Failed to load user', err)
+        }
+    }
+
+    loadUser()
+    loadKeyInfo()
+</script>
 </body>
 </html>

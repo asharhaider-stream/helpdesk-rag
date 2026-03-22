@@ -3,232 +3,576 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deskmate - Turn your documents into a 24/7 support agent</title>
+    <title>Deskmate — Turn your documents into a 24/7 support agent</title>
     <link rel="stylesheet" href="/static/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        .hero {
+        body { background-color: white; }
+
+        /* Navbar */
+        .nav {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 80px 40px;
-            max-width: 1100px;
-            margin: 0 auto;
-            gap: 40px;
+            padding: 0 60px;
+            height: 64px;
+            background-color: white;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .hero-text h1 {
-            font-size: 48px;
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 30px;
+            height: 30px;
+            background-color: var(--blue);
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-logo-icon svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+
+        .nav-logo-text {
+            font-size: 17px;
             font-weight: 700;
-            color: #1d3557;
-            line-height: 1.2;
-            max-width: 500px;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 7px 14px;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background-color: var(--bg);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 100px 60px 80px;
+            text-align: center;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            font-size: 13px;
+            font-weight: 500;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 28px;
+            border: 1px solid #BFDBFE;
+        }
+
+        .hero-badge-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--blue);
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-size: 58px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -2px;
+            line-height: 1.1;
             margin-bottom: 20px;
         }
 
-        .hero-text p {
+        .hero h1 span { color: var(--blue); }
+
+        .hero p {
             font-size: 18px;
-            color: #457b9d;
-            margin-bottom: 32px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 540px;
+            margin: 0 auto 36px;
         }
 
         .hero-buttons {
             display: flex;
-            gap: 16px;
+            gap: 12px;
+            justify-content: center;
             flex-wrap: wrap;
         }
 
-        .btn-outline {
-            padding: 10px 24px;
-            border: 2px solid #457b9d;
-            color: #457b9d;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .hero-image {
-            width: 480px;
-            min-width: 280px;
-            height: 320px;
-            background-color: #a8dadc;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #1d3557;
-            font-size: 18px;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-
-        .features {
-            background-color: white;
-            padding: 80px 40px;
-        }
-
-        .features h2 {
-            text-align: center;
-            font-size: 32px;
-            color: #1d3557;
-            margin-bottom: 50px;
-        }
-
-        .feature-cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+        /* Dashboard mockup */
+        .mockup-section {
+            padding: 0 60px 80px;
             max-width: 1100px;
             margin: 0 auto;
         }
 
-        .feature-card {
-            padding: 30px;
-            border-radius: 10px;
-            background-color: #f1faee;
-            border-left: 4px solid #457b9d;
+        .dashboard-mockup {
+            background-color: var(--sidebar-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 24px 80px rgba(15,23,42,0.2);
+            border: 1px solid rgba(255,255,255,0.06);
         }
 
-        .feature-card h3 {
-            font-size: 18px;
-            color: #1d3557;
+        .mockup-topbar {
+            background-color: rgba(255,255,255,0.04);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .mockup-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .mockup-dot:nth-child(1) { background-color: #EF4444; }
+        .mockup-dot:nth-child(2) { background-color: #F59E0B; }
+        .mockup-dot:nth-child(3) { background-color: #22C55E; }
+
+        .mockup-body {
+            display: flex;
+        }
+
+        .mockup-sidebar {
+            width: 160px;
+            padding: 16px 12px;
+            border-right: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .mockup-sidebar-logo {
+            height: 10px;
+            background-color: rgba(255,255,255,0.15);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            width: 80px;
+        }
+
+        .mockup-nav-item {
+            height: 8px;
+            background-color: rgba(255,255,255,0.08);
+            border-radius: 4px;
             margin-bottom: 10px;
         }
 
-        .feature-card p {
+        .mockup-nav-item.active {
+            background-color: rgba(59,130,246,0.5);
+        }
+
+        .mockup-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #0F172A;
+        }
+
+        .mockup-stat-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .mockup-stat {
+            background-color: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .mockup-stat-label {
+            height: 6px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            margin-bottom: 8px;
+            width: 60%;
+        }
+
+        .mockup-stat-value {
+            height: 14px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            width: 40%;
+        }
+
+        .mockup-chart {
+            background-color: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
+            padding: 16px;
+            height: 100px;
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+        }
+
+        .mockup-bar {
+            flex: 1;
+            background-color: rgba(59,130,246,0.4);
+            border-radius: 3px 3px 0 0;
+        }
+
+        /* Social proof */
+        .social-proof {
+            background-color: var(--bg);
+            padding: 24px 60px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .social-proof p {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        /* How it works */
+        .how-it-works {
+            padding: 80px 60px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.8px;
+            margin-bottom: 48px;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .step-item {
+            padding: 28px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background-color: white;
+            transition: box-shadow var(--transition);
+        }
+
+        .step-item:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .step-number {
+            font-size: 40px;
+            font-weight: 700;
+            color: var(--border);
+            letter-spacing: -2px;
+            line-height: 1;
+            margin-bottom: 16px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .step-item h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .step-item p {
             font-size: 14px;
-            color: #457b9d;
+            color: var(--text-secondary);
             line-height: 1.6;
         }
 
+        /* CTA */
         .cta-section {
-            background-color: #1d3557;
-            padding: 80px 40px;
+            margin: 0 60px 80px;
+            background-color: var(--sidebar-bg);
+            border-radius: 20px;
+            padding: 64px 48px;
             text-align: center;
-            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: none;
         }
 
         .cta-section h2 {
-            font-size: 36px;
-            margin-bottom: 16px;
+            font-size: 40px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -1px;
+            margin-bottom: 14px;
         }
 
         .cta-section p {
-            font-size: 18px;
-            color: #a8dadc;
+            font-size: 16px;
+            color: var(--sidebar-text);
             margin-bottom: 32px;
         }
 
+        /* Footer */
         footer {
-            background-color: #1d3557;
-            padding: 20px 40px;
-            text-align: center;
-            color: #a8dadc;
+            background-color: var(--sidebar-bg);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 48px 60px 32px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand p {
             font-size: 13px;
-            border-top: 1px solid #457b9d;
+            color: var(--sidebar-text);
+            line-height: 1.7;
+            margin-top: 12px;
+            max-width: 260px;
+        }
+
+        .footer-col h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 14px;
+        }
+
+        .footer-col a {
+            display: block;
+            font-size: 14px;
+            color: var(--sidebar-text);
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: color var(--transition);
+        }
+
+        .footer-col a:hover { color: white; }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding-top: 24px;
+            font-size: 13px;
+            color: var(--sidebar-text);
+            text-align: center;
         }
 
         /* Responsive */
         @media (max-width: 900px) {
-            .hero {
-                flex-direction: column;
-                padding: 60px 24px;
-                text-align: center;
-            }
-
-            .hero-text h1 {
-                font-size: 36px;
-                max-width: 100%;
-            }
-
-            .hero-buttons {
-                justify-content: center;
-            }
-
-            .hero-image {
-                width: 100%;
-                height: 220px;
-            }
-
-            .feature-cards {
-                grid-template-columns: 1fr;
-            }
-
-            .features {
-                padding: 60px 24px;
-            }
-
-            .cta-section {
-                padding: 60px 24px;
-            }
-
-            .cta-section h2 {
-                font-size: 28px;
-            }
+            .nav { padding: 0 24px; }
+            .hero { padding: 60px 24px 48px; }
+            .hero h1 { font-size: 36px; letter-spacing: -1px; }
+            .mockup-section { padding: 0 24px 60px; }
+            .how-it-works { padding: 60px 24px; }
+            .steps-grid { grid-template-columns: 1fr; gap: 16px; }
+            .cta-section { margin: 0 24px 60px; padding: 48px 24px; }
+            .cta-section h2 { font-size: 28px; }
+            footer { padding: 40px 24px 24px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+            .social-proof { padding: 20px 24px; }
         }
 
         @media (max-width: 480px) {
-            .navbar {
-                padding: 16px 20px;
-            }
-
-            .hero-text h1 {
-                font-size: 28px;
-            }
-
-            .hero-text p {
-                font-size: 16px;
-            }
+            .nav-links .nav-link:not(.btn) { display: none; }
+            .hero h1 { font-size: 30px; }
+            .mockup-stat-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="/" class="logo">Deskmate</a>
-        <a href="/login.html" class="btn">Login</a>
+    <!-- Navbar -->
+    <nav class="nav">
+        <a href="/" class="nav-logo">
+            <div class="nav-logo-icon">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+            </div>
+            <span class="nav-logo-text">Deskmate</span>
+        </a>
+        <div class="nav-links">
+            <a href="#how-it-works" class="nav-link">How it works</a>
+            <a href="/login.html" class="nav-link">Login</a>
+            <a href="/login.html" class="btn btn-primary btn-sm">Get Started</a>
+        </div>
     </nav>
 
+    <!-- Hero -->
     <section class="hero">
-        <div class="hero-text">
-            <h1>Turn your documents into a 24/7 support agent.</h1>
-            <p>Upload your PDFs. We handle the rest.</p>
-            <div class="hero-buttons">
-                <a href="/login.html" class="btn-primary" style="text-decoration:none; padding: 12px 28px;">Get Started Free</a>
-                <a href="#how-it-works" class="btn-outline">See How It Works</a>
-            </div>
+        <div class="hero-badge">
+            <div class="hero-badge-dot"></div>
+            AI-powered customer support
         </div>
-        <div class="hero-image">
-            AI Chat Preview
+        <h1>Your documents.<br><span>Instant answers.</span> 24/7.</h1>
+        <p>Upload your PDFs and give your customers an AI support agent that never sleeps. No coding required.</p>
+        <div class="hero-buttons">
+            <a href="/login.html" class="btn btn-primary btn-lg">Get Started Free</a>
+            <a href="#how-it-works" class="btn btn-secondary btn-lg">See How It Works</a>
         </div>
     </section>
 
-    <section class="features" id="how-it-works">
-        <h2>How It Works</h2>
-        <div class="feature-cards">
-            <div class="feature-card">
+    <!-- Dashboard Mockup -->
+    <div class="mockup-section">
+        <div class="dashboard-mockup">
+            <div class="mockup-topbar">
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+            </div>
+            <div class="mockup-body">
+                <div class="mockup-sidebar">
+                    <div class="mockup-sidebar-logo"></div>
+                    <div class="mockup-nav-item active"></div>
+                    <div class="mockup-nav-item"></div>
+                    <div class="mockup-nav-item"></div>
+                    <div class="mockup-nav-item"></div>
+                </div>
+                <div class="mockup-content">
+                    <div class="mockup-stat-row">
+                        <div class="mockup-stat">
+                            <div class="mockup-stat-label"></div>
+                            <div class="mockup-stat-value"></div>
+                        </div>
+                        <div class="mockup-stat">
+                            <div class="mockup-stat-label"></div>
+                            <div class="mockup-stat-value"></div>
+                        </div>
+                        <div class="mockup-stat">
+                            <div class="mockup-stat-label"></div>
+                            <div class="mockup-stat-value"></div>
+                        </div>
+                    </div>
+                    <div class="mockup-chart">
+                        <div class="mockup-bar" style="height:40%"></div>
+                        <div class="mockup-bar" style="height:65%"></div>
+                        <div class="mockup-bar" style="height:50%"></div>
+                        <div class="mockup-bar" style="height:80%"></div>
+                        <div class="mockup-bar" style="height:60%"></div>
+                        <div class="mockup-bar" style="height:90%"></div>
+                        <div class="mockup-bar" style="height:70%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Social proof -->
+    <div class="social-proof">
+        <p>Trusted by businesses to answer thousands of customer questions</p>
+    </div>
+
+    <!-- How it works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="section-label">How it works</div>
+        <div class="section-title">From documents to live support<br>in under five minutes.</div>
+        <div class="steps-grid">
+            <div class="step-item">
+                <div class="step-number">01</div>
                 <h3>Upload</h3>
-                <p>Upload your PDF documents, manuals, and FAQs to our secure platform.</p>
+                <p>Upload your PDF documents, manuals, FAQs, or help articles to Deskmate. We support any text-based PDF.</p>
             </div>
-            <div class="feature-card">
-                <h3>AI Training</h3>
-                <p>Our AI reads and understands every detail of your documents automatically.</p>
+            <div class="step-item">
+                <div class="step-number">02</div>
+                <h3>Train</h3>
+                <p>Our AI reads and indexes every page automatically. No manual tagging or configuration required.</p>
             </div>
-            <div class="feature-card">
+            <div class="step-item">
+                <div class="step-number">03</div>
                 <h3>Embed</h3>
-                <p>Add one line of code to your website. Your customers get instant answers 24/7.</p>
+                <p>Paste one line of code into your website. Your customers get instant, accurate answers from your own documents.</p>
             </div>
         </div>
     </section>
 
+    <!-- CTA -->
     <section class="cta-section">
-        <h2>Ready to transform your support?</h2>
-        <p>Join businesses using Deskmate to provide faster, more accurate support.</p>
-        <a href="/login.html" class="btn-danger" style="text-decoration:none; padding: 14px 32px; font-size: 16px;">Get Started for Free</a>
+        <h2>Ready to automate your support?</h2>
+        <p>Join businesses using Deskmate to provide faster, more accurate answers.</p>
+        <a href="/login.html" class="btn btn-primary btn-lg">Create Your Free Account</a>
     </section>
 
+    <!-- Footer -->
     <footer>
-        2024 Deskmate. All rights reserved.
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="/" class="nav-logo">
+                    <div class="nav-logo-icon">
+                        <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                    </div>
+                    <span class="nav-logo-text" style="color:white;">Deskmate</span>
+                </a>
+                <p>The modern standard for document-driven AI support. Empower your business with instant, accurate answers 24/7.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Product</h4>
+                <a href="#how-it-works">Features</a>
+                <a href="/login.html">Get Started</a>
+                <a href="#">Docs</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            2024 Deskmate. All rights reserved.
+        </div>
     </footer>
 
 </body>

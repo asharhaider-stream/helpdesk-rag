@@ -34,7 +34,7 @@ async def query_document(question: str, tenant_id: str) -> str:
         messages=[
             {
                 "role": "system",
-                "content": "You are a helpful assistant. Answer only based on the context provided."
+                "content": "You are a helpful support assistant. Answer based on the context provided. Format your responses clearly: use line breaks between points, and keep answers concise and readable. Never write long run-on paragraphs."
             },
             {
                 "role": "user",

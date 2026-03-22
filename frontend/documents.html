@@ -3,135 +3,335 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deskmate - Documents</title>
+    <title>Deskmate — Documents</title>
     <link rel="stylesheet" href="/static/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .page-header h1 {
-            font-size: 26px;
-            font-weight: 700;
-            color: #1d3557;
-        }
-
-        .upload-zone {
-            border: 2px dashed #a8dadc;
-            border-radius: 12px;
-            padding: 60px 20px;
-            text-align: center;
-            background-color: white;
-            cursor: pointer;
-            margin-bottom: 30px;
-            transition: all 0.2s;
-        }
-
-        .upload-zone:hover {
-            border-color: #457b9d;
-            background-color: #f1faee;
-        }
-
-        .upload-zone.dragover {
-            border-color: #1d3557;
-            background-color: #f1faee;
-        }
-
-        .upload-zone h3 {
-            font-size: 18px;
-            color: #1d3557;
-            margin-bottom: 8px;
-        }
-
-        .upload-zone p {
-            font-size: 14px;
-            color: #457b9d;
-            margin-bottom: 20px;
-        }
-
-        .upload-zone input[type="file"] {
-            display: none;
-        }
-
-        .upload-progress {
-            display: none;
-            margin-top: 16px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background-color: #f1faee;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background-color: #457b9d;
-            width: 0%;
-            transition: width 0.3s;
-        }
-
-        .docs-header {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1d3557;
-            margin-bottom: 16px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #457b9d;
-        }
-    </style>
 </head>
 <body>
 
-    <div class="app-layout">
-        <div class="sidebar">
-            <div class="logo">Deskmate</div>
-            <a href="/dashboard.html">Dashboard</a>
-            <a href="/documents.html" class="active">Documents</a>
-            <a href="/widget.html">Widget</a>
-            <div style="margin-top: auto; padding-top: 20px;">
-                <button class="btn-danger" style="width:100%" onclick="handleLogout()">Logout</button>
+<div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-icon">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
             </div>
+            <span class="sidebar-logo-text">Deskmate</span>
         </div>
 
-        <div class="main-content">
+        <div class="sidebar-section-label">General</div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard.html" class="sidebar-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                    <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                Dashboard
+            </a>
+            <a href="/documents.html" class="sidebar-link active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14,2 14,8 20,8"/>
+                </svg>
+                Documents
+            </a>
+            <a href="/widget.html" class="sidebar-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                Widget
+            </a>
+        </nav>
+
+        <div class="sidebar-section-label">Account</div>
+        <nav class="sidebar-nav">
+            <a href="/settings.html" class="sidebar-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                Settings
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <button class="sidebar-logout" onclick="handleLogout()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16,17 21,12 16,7"/>
+                    <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                Logout
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main-wrapper">
+
+        <!-- Topbar -->
+        <header class="topbar">
+            <span class="topbar-title">Documents</span>
+            <div class="topbar-right" style="position:relative;">
+                <button class="avatar-btn" id="avatar-btn" onclick="toggleDropdown()">
+                    <span id="avatar-initials">?</span>
+                </button>
+                <div class="avatar-dropdown" id="avatar-dropdown">
+                    <div class="avatar-dropdown-header">
+                        <div class="avatar-dropdown-email" id="dropdown-email">Loading...</div>
+                    </div>
+                    <a href="/settings.html" class="avatar-dropdown-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                        Settings
+                    </a>
+                    <button class="avatar-dropdown-item danger" onclick="handleLogout()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16,17 21,12 16,7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="page-content">
+
             <div class="page-header">
                 <h1>Documents</h1>
+                <p>Upload PDFs to train your AI assistant</p>
             </div>
 
-            <div id="upload-alert"></div>
+            <div class="alert alert-error" id="upload-error"></div>
+            <div class="alert alert-success" id="upload-success"></div>
 
+            <!-- Upload Zone -->
             <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
-                <h3>Upload Documents</h3>
-                <p>Drag and drop your PDF files here, or click to browse</p>
-                <button class="btn-primary" onclick="event.stopPropagation(); document.getElementById('file-input').click()">Select Files</button>
-                <input type="file" id="file-input" accept=".pdf" multiple onchange="handleFileUpload(this.files)">
-                <div class="upload-progress" id="upload-progress">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progress-fill"></div>
+                <div class="upload-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="16,16 12,12 8,16"/>
+                        <line x1="12" y1="12" x2="12" y2="21"/>
+                        <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+                    </svg>
+                </div>
+                <h3>Drop your PDF files here or click to browse</h3>
+                <p>Maximum file size 50MB. Only PDF files supported.</p>
+                <button class="btn btn-primary" onclick="event.stopPropagation(); document.getElementById('file-input').click()" id="upload-btn">
+                    Select Files
+                </button>
+                <input type="file" id="file-input" accept=".pdf" multiple style="display:none" onchange="handleFileUpload(this.files)">
+            </div>
+
+            <!-- Documents Table -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Your Documents <span id="doc-count" style="font-size:12px; background:var(--blue-light); color:var(--blue); padding:2px 8px; border-radius:20px; font-weight:600; margin-left:6px;"></span></span>
+                    <button class="btn btn-ghost btn-sm" onclick="loadDocuments()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
+                            <polyline points="23,4 23,10 17,10"/>
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
+                <div class="table-container" id="docs-container">
+                    <div class="empty-state">
+                        <p>No documents uploaded yet</p>
                     </div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="docs-header">Your Documents</div>
-                <div id="docs-list">
-                    <div class="empty-state">Loading...</div>
-                </div>
-            </div>
-        </div>
+        </main>
     </div>
+</div>
 
-    <script src="/static/js/documents.js"></script>
+<script>
+    const token = localStorage.getItem('token')
+    if (!token) window.location.href = '/login.html'
+
+    document.addEventListener('click', (e) => {
+        const dropdown = document.getElementById('avatar-dropdown')
+        const btn = document.getElementById('avatar-btn')
+        if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.remove('open')
+        }
+    })
+
+    function toggleDropdown() {
+        document.getElementById('avatar-dropdown').classList.toggle('open')
+    }
+
+    function handleLogout() {
+        localStorage.removeItem('token')
+        window.location.href = '/login.html'
+    }
+
+    // Drag and drop
+    const uploadZone = document.getElementById('upload-zone')
+
+    uploadZone.addEventListener('dragover', (e) => {
+        e.preventDefault()
+        uploadZone.classList.add('dragover')
+    })
+
+    uploadZone.addEventListener('dragleave', () => {
+        uploadZone.classList.remove('dragover')
+    })
+
+    uploadZone.addEventListener('drop', (e) => {
+        e.preventDefault()
+        uploadZone.classList.remove('dragover')
+        handleFileUpload(e.dataTransfer.files)
+    })
+
+    async function handleFileUpload(files) {
+        const errorBox = document.getElementById('upload-error')
+        const successBox = document.getElementById('upload-success')
+        const btn = document.getElementById('upload-btn')
+
+        errorBox.classList.remove('visible')
+        successBox.classList.remove('visible')
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i]
+
+            if (!file.name.endsWith('.pdf')) {
+                errorBox.textContent = `${file.name} is not a PDF file. Only PDFs are supported.`
+                errorBox.classList.add('visible')
+                continue
+            }
+
+            if (file.size > 50 * 1024 * 1024) {
+                errorBox.textContent = `${file.name} exceeds the 50MB limit.`
+                errorBox.classList.add('visible')
+                continue
+            }
+
+            btn.classList.add('btn-loading')
+            btn.textContent = ''
+
+            const formData = new FormData()
+            formData.append('file', file)
+
+            try {
+                const res = await fetch('/api/v1/documents/upload', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                })
+
+                if (res.status === 401) {
+                    localStorage.removeItem('token')
+                    window.location.href = '/login.html'
+                    return
+                }
+
+                if (!res.ok) {
+                    errorBox.textContent = `Failed to upload ${file.name}. Please try again.`
+                    errorBox.classList.add('visible')
+                    continue
+                }
+
+                successBox.textContent = `${file.name} uploaded successfully. AI is processing it in the background.`
+                successBox.classList.add('visible')
+
+            } catch (err) {
+                errorBox.textContent = 'Upload failed. Check your connection and try again.'
+                errorBox.classList.add('visible')
+            } finally {
+                btn.classList.remove('btn-loading')
+                btn.textContent = 'Select Files'
+            }
+        }
+
+        loadDocuments()
+        // Auto hide success after 4 seconds
+        setTimeout(() => successBox.classList.remove('visible'), 4000)
+    }
+
+    async function loadDocuments() {
+        try {
+            const res = await fetch('/api/v1/documents/', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+
+            if (res.status === 401) {
+                localStorage.removeItem('token')
+                window.location.href = '/login.html'
+                return
+            }
+
+            const docs = await res.json()
+            const container = document.getElementById('docs-container')
+            const countBadge = document.getElementById('doc-count')
+
+            countBadge.textContent = `${docs.length} total`
+
+            if (docs.length === 0) {
+                container.innerHTML = `<div class="empty-state"><p>No documents uploaded yet</p></div>`
+                return
+            }
+
+            container.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Filename</th>
+                            <th>Date Uploaded</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${docs.map(doc => `
+                            <tr>
+                                <td>
+                                    <div style="font-weight:500;">${doc.filename}</div>
+                                </td>
+                                <td class="td-secondary">${new Date(doc.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
+                                <td>
+                                    <span class="badge ${doc.status === 'done' ? 'badge-ready' : 'badge-processing'}">
+                                        <span class="badge-dot"></span>
+                                        ${doc.status === 'done' ? 'Ready' : 'Processing'}
+                                    </span>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `
+
+            // Poll if any docs are still processing
+            const hasProcessing = docs.some(d => d.status !== 'done')
+            if (hasProcessing) {
+                setTimeout(loadDocuments, 5000)
+            }
+
+        } catch (err) {
+            console.error('Failed to load documents', err)
+        }
+    }
+
+    // Load user info for avatar
+    async function loadUser() {
+        try {
+            const res = await fetch('/api/v1/auth/me', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            const user = await res.json()
+            document.getElementById('avatar-initials').textContent = user.email.substring(0, 2).toUpperCase()
+            document.getElementById('dropdown-email').textContent = user.email
+        } catch (err) {
+            console.error('Failed to load user', err)
+        }
+    }
+
+    loadUser()
+    loadDocuments()
+</script>
 </body>
 </html>
