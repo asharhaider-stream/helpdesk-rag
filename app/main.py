@@ -51,3 +51,7 @@ async def documents_page(request: Request):
 @app.get("/widget.html")
 async def widget_page(request: Request):
     return templates.TemplateResponse("widget.html", {"request": request})
+
+@app.get("/test-widget.html")
+async def test_widget_page(request: Request):
+    return templates.TemplateResponse("test-widget.html", {"request": request})
