@@ -21,3 +21,4 @@ python-jose[cryptography]
 jinja2
 aiofiles
 psycopg2-binary
+slowapi
