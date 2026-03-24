@@ -7,9 +7,14 @@ async function loadDashboard() {
             headers: { 'Authorization': `Bearer ${token}` }
         })
 
+        // if (res.status === 401) {
+        //     localStorage.removeItem('token')
+        //     window.location.href = '/login.html'
+        //     return
+        // }
         if (res.status === 401) {
-            localStorage.removeItem('token')
-            window.location.href = '/login.html'
+            const errorData = await res.json()
+            alert('401 Error: ' + JSON.stringify(errorData))
             return
         }
 
