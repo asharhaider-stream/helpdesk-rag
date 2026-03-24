@@ -9,7 +9,6 @@ from app.db.qdrant import client as qdrant_client, create_collection
 from qdrant_client.models import PointStruct
 import uuid
 from sqlalchemy import update
-import asyncio
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -65,14 +64,5 @@ def process_document(file_path: str, tenant_id: str, document_id: int):
     )
 
     print(f"Stored {len(points)} vectors in Qdrant")
-    
-    async def mark_done(document_id: int):
-        async with AsyncSessionLocal() as db:
-            await db.execute(
-                update(Document)
-                .where(Document.id == document_id)
-                .values(status="done")
-            )
-            await db.commit()
 
     mark_document_done(document_id)   
