@@ -3,27 +3,25 @@ if (!token) window.location.href = '/login.html'
 
 async function loadDashboard() {
     try {
-        const res = await fetch('/api/v1/auth/me', {
-            headers: { 'Authorization': `Bearer ${token}` }
-        })
+    const res = await fetch('/api/v1/auth/me', {
+        headers: { 'Authorization': `Bearer ${token}` }
+    })
 
-        // if (res.status === 401) {
-        //     localStorage.removeItem('token')
-        //     window.location.href = '/login.html'
-        //     return
-        // }
-        if (res.status === 401) {
-            const errorData = await res.json()
-            alert('401 Error: ' + JSON.stringify(errorData))
-            return
-        }
+    const data = await res.json()
+    
+    if (res.status === 401) {
+        console.error('401 response:', data)
+        document.body.innerHTML = `<h1 style="color:red">401 Error: ${JSON.stringify(data)}</h1>`
+        return
+    }
 
-        const data = await res.json()
-        document.getElementById('user-email').textContent = data.email
-        document.getElementById('tenant-id').textContent = data.tenant_id
+    document.getElementById('avatar-initials').textContent = getInitials(data.email)
+    document.getElementById('dropdown-email').textContent = data.email
+    document.getElementById('tenant-id-display').textContent = data.tenant_id
 
     } catch (err) {
-        console.error('Failed to load user info', err)
+    console.error('Failed to load user', err)
+    document.body.innerHTML = `<h1 style="color:red">Fetch Error: ${err.message}</h1>`
     }
 
     try {
