@@ -47,24 +47,24 @@ async def health():
 
 @app.get("/")
 async def landing(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="index.html")
 
 @app.get("/login.html")
 async def login_page(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="login.html")
 
 @app.get("/dashboard.html")
 async def dashboard_page(request: Request):
-    return templates.TemplateResponse("dashboard.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="dashboard.html")
 
 @app.get("/documents.html")
 async def documents_page(request: Request):
-    return templates.TemplateResponse("documents.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="documents.html")
 
 @app.get("/widget.html")
 async def widget_page(request: Request):
-    return templates.TemplateResponse("widget.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="widget.html")
 
 @app.get("/test-widget.html")
 async def test_widget_page(request: Request):
-    return templates.TemplateResponse("test-widget.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="test-widget.html")
