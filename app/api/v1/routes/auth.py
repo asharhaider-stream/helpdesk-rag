@@ -23,8 +23,6 @@ class LoginRequest(BaseModel):
     email: str
     password: str
 
-import uuid
-
 @router.post("/register")
 async def register(request: RegisterRequest, db: AsyncSession = Depends(get_db)):
     existing = await db.execute(select(Tenant).where(Tenant.email == request.email))
