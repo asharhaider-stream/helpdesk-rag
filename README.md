@@ -41,48 +41,6 @@ Upload PDFs → AI trains automatically → Embed widget once → Customers get 
 
 ---
 
-## Project Structure
-
-helpdesk-rag/
-├── app/
-│ ├── api/v1/routes/ # HTTP route handlers
-│ │ ├── auth.py # Register, login, user info
-│ │ ├── documents.py # Upload and list documents
-│ │ ├── query.py # Ask questions, query stats
-│ │ └── apikeys.py # Generate and list API keys
-│ ├── core/
-│ │ ├── config.py # Environment variable validation
-│ │ ├── security.py # JWT and password hashing
-│ │ └── dependencies.py # Auth dependency injection
-│ ├── db/
-│ │ ├── postgres.py # SQLAlchemy async engine
-│ │ └── qdrant.py # Qdrant client and collections
-│ ├── models/ # PostgreSQL table definitions
-│ ├── schemas/ # Pydantic request/response shapes
-│ ├── services/
-│ │ ├── ingestion.py # PDF → chunks → embeddings → Qdrant
-│ │ └── retrieval.py # Question → search → LLM → answer
-│ ├── worker.py # Celery configuration
-│ └── main.py # FastAPI app entry point
-├── frontend/
-│ ├── index.html # Landing page
-│ ├── login.html # Login and registration
-│ ├── dashboard.html # Analytics and overview
-│ ├── documents.html # Document management
-│ ├── widget.html # Widget setup and embed code
-│ └── static/
-│ ├── css/style.css # Design system
-│ └── js/ # Page logic and chat widget
-├── docker-compose.yml # Development environment
-├── docker-compose.prod.yml # Production environment
-├── nginx.conf # Reverse proxy configuration
-├── Dockerfile
-├── requirements.txt
-└── .env.example # Environment variable template
-
-
----
-
 ## Getting Started
 
 ### Prerequisites
